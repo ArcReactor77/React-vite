@@ -1,37 +1,38 @@
-import { useState } from 'react'
+import { useReducer, useState } from 'react'
 import reactLogo from './assets/react.svg'
 // import './App.css'
 import './styles.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const ACTIONS = {
+  ADD_DIGIT: 'add-digit',
+  CHOOSE_OPERATION: 'choose-operation',
+  CLEAR: 'clear',
+  DELETE_DIGIT: 'delete-digit',
+  EVALUATE: 'evaluate'
+}
 
+
+function reducer(state, {type,  payload}){
+  switch(type){
+    case ACTIONS.ADD_DIGIT:
+      return {
+        ...state,
+        currentOperand: `${currentOperand || ""}${payload.digit}`
+      }
+  }
+
+}
+
+function App() {
+  const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, [])
+
+  dispatch({type: ACTIONS.ADD_DIGIT, payload: {digit: 1}})
   return (
     <div className="calculator-grid">
      <div className="output">
-      <div className="previous-operand">123,342 * </div>
-      <div className="current-operand">123,456</div>
+      <div className="previous-operand">{previousOperand} {operation}</div>
+      <div className="current-operand">{currentOperand}</div>
      </div>
-      {/* <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div> */}
-      {/* <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div> */}
-      {/* <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p> */}
       <button className="span-two">AC</button>
       <button>DEL</button>
       <button>+</button>
